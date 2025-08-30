@@ -1,8 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import prisma from "../prisma/prisma";
 import { io } from "../server";
-import { getNoteById } from "../utils/notes";
-import { decryptSocketData, encryptSocketData } from "../utils/cryptr";
+import { getNoteById } from "../../utils/notes";
+import { decryptSocketData, encryptSocketData } from "../../utils/cryptr";
 
 const app: Express = express();
 
@@ -77,7 +77,10 @@ app.delete(
         },
       });
 
-      io.emit("note-deleted", encryptSocketData(JSON.stringify({ noteId: deletedNote.id })));
+      io.emit(
+        "note-deleted",
+        encryptSocketData(JSON.stringify({ noteId: deletedNote.id }))
+      );
     } catch (error: any) {
       return response.json({ message: "Internal Server Error" }).status(500);
     }

@@ -1,8 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import prisma from "../prisma/prisma";
 import { io } from "../server";
-import { getTodoById } from "../utils/todos";
-import { encryptSocketData } from "../utils/cryptr";
+import { getTodoById } from "../../utils/todos";
+import { encryptSocketData } from "../../utils/cryptr";
 
 const app: Express = express();
 
@@ -23,8 +23,6 @@ app.post("/todo/create", async (request: Request, res: Response) => {
         userId,
       },
     });
-
-
 
     io.emit("todo-created", encryptSocketData(JSON.stringify(newTodo)));
     return res.json({ message: "Todo Created" }).status(200);
