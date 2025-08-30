@@ -1,8 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import prisma from "../utils/prisma";
 import { io } from "../server";
-import { getTodoById } from "../../utils/todos";
-import { encryptSocketData } from "../../utils/cryptr";
+import { encryptSocketData } from "../utils/cryptr";
+import { getTodoById } from "../utils/todos";
+
 
 const app: Express = express();
 

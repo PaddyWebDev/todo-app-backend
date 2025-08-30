@@ -3,11 +3,6 @@ import prisma from "./prisma";
 import { Todo } from "@prisma/client";
 import { getUserById } from "./user";
 
-// Placeholder for fetching todos. Replace with actual logic to fetch todos from your database.
-//  const todos = [
-//   { id: 1, email: "user1@example.com", timer: Date.now() + 60 * 1000 }, // 1 minute from now
-//   { id: 2, email: "user2@example.com", timer: Date.now() + 90 * 1000 }, // 1.5 minutes from now
-// ];
 
 async function fetchTodos() {
   return await prisma.todo.findMany({
