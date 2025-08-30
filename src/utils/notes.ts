@@ -1,5 +1,5 @@
 import { Note } from "@prisma/client";
-import prisma from "../prisma/prisma";
+import prisma from "./prisma";
 
 export async function getNoteById(noteId: string): Promise<Note | null> {
   return (

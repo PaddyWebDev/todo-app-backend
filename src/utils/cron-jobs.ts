@@ -1,5 +1,5 @@
 import { CronJob } from "cron";
-import prisma from "../prisma/prisma";
+import prisma from "./prisma";
 import { Todo } from "@prisma/client";
 import { getUserById } from "./user";
 

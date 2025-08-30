@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express";
-import prisma from "../prisma/prisma";
+import prisma from "../utils/prisma";
 import { io } from "../server";
 import { getTodoById } from "../../utils/todos";
 import { encryptSocketData } from "../../utils/cryptr";
