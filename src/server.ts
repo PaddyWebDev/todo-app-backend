@@ -21,15 +21,15 @@ const io = new Server(server, {
 
 const whiteList: string[] = [process.env.FRONT_END_URL!];
 
-const corsOptions: CorsOptions = {
-  origin: function (origin, callback) {
-    if (whiteList.indexOf(origin!) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
+// const corsOptions: CorsOptions = {
+//   origin: function (origin, callback) {
+//     if (whiteList.indexOf(origin!) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
 
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
@@ -39,7 +39,7 @@ io.on("disconnect", (socket) => {
 });
 
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Start cron job
 // if (!cronJob.running) {
