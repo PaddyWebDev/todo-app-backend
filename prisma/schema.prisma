@@ -68,7 +68,6 @@ model PasswordResetToken {
 model Note {
   id          String   @id @default(cuid())
   title       String
-  description String
   content     String
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)

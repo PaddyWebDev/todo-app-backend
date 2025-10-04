@@ -10,3 +10,13 @@ export async function getNoteById(noteId: string): Promise<Note | null> {
     })) || null
   );
 }
+
+export async function checkNoteExistsById(id: string) {
+  return await prisma.note.findUnique({
+    where: {
+      id
+    },select: {
+      title: true,
+    }
+  })
+}

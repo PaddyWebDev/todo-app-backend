@@ -10,6 +10,7 @@ async function fetchTodos() {
       dueDate: {
         not: null,
       },
+      isCompleted: false,
     },
   });
 }

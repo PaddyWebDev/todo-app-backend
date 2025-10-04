@@ -4,14 +4,13 @@ import { io } from "../server";
 import { encryptSocketData } from "../utils/cryptr";
 import { getTodoById } from "../utils/todos";
 
-
 const app: Express = express();
 
-app.post("/todo/create", async (request: Request, res: Response) => {
+app.post("/todo/create", async (request: Request, response: Response) => {
   try {
     const { title, description, priority, reminder, userId } = request.body;
     if (!userId) {
-      return res.status(400).json({ error: "User Id is required" });
+      return response.status(400).send("User Id is required");
     }
     const newPriority = Number(priority);
 
@@ -26,14 +25,9 @@ app.post("/todo/create", async (request: Request, res: Response) => {
     });
 
     io.emit("todo-created", encryptSocketData(JSON.stringify(newTodo)));
-    return res.json({ message: "Todo Created" }).status(200);
+    return response.send("Todo Created").status(200);
   } catch (error: any) {
-    console.log(error);
-    return res
-      .json({
-        message: "Internal Server Error",
-      })
-      .status(500);
+    return response.send("Internal Server Error").status(500);
   }
 });
 
@@ -45,9 +39,7 @@ app.put(
         request.body;
       const getTodo = await getTodoById(request.params.todoId);
       if (!getTodo) {
-        return response.status(404).json({
-          message: "Note not found",
-        });
+        return response.status(404).send("Note not found");
       }
 
       const todoPriority = Number(priority);
@@ -68,12 +60,9 @@ app.put(
 
       io.emit("todo-updated", encryptSocketData(JSON.stringify(updatedNote)));
 
-      return response
-        .json({ message: "Todo updated successfully" })
-        .status(200);
+      return response.send("Todo updated successfully").status(200);
     } catch (error: any) {
-      console.log(error);
-      return response.json({ message: "Internal Server Error" }).status(500);
+      return response.send("Internal Server Error").status(500);
     }
   }
 );
@@ -85,11 +74,7 @@ app.patch(
       const todo = await getTodoById(request.params.todoId);
 
       if (!todo) {
-        return response
-          .json({
-            message: "Todo not found",
-          })
-          .status(404);
+        return response.send("Todo not found").status(404);
       }
 
       const updatedTodo = await prisma.todo.update({
@@ -110,17 +95,9 @@ app.patch(
           })
         )
       );
-      return response
-        .json({
-          message: "Todo Updated",
-        })
-        .status(200);
+      return response.send("Todo Updated").status(200);
     } catch (error: any) {
-      return response
-        .json({
-          message: "Internal Server Error",
-        })
-        .status(500);
+      return response.send("Internal Server Error").status(500);
     }
   }
 );
@@ -132,9 +109,7 @@ app.delete(
       const todo = await getTodoById(request.params.todoId);
 
       if (!todo) {
-        return response.status(404).json({
-          message: "Todo not found",
-        });
+        return response.status(404).send("Todo not found");
       }
 
       const deletedTodo = await prisma.todo.delete({
@@ -151,10 +126,26 @@ app.delete(
           })
         )
       );
+      return response.send("Todo Deleted Successfully").status(200);
     } catch (error: any) {
-      return response.json({ message: "Internal Server Error" }).status(500);
+      return response.send("Internal Server Error").status(500);
     }
   }
 );
+
+app.get("/todo/get/:userId", async (request: Request, response: Response) => {
+  try {
+    const { userId } = request.params;
+    const todos = await prisma.todo.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return response.json(todos).status(200);
+  } catch (error) {
+    return response.send("Internal Server Error").status(500);
+  }
+});
 
 export default app;
